@@ -1,0 +1,41 @@
+services:
+    # client:
+    #     restart: always
+    #     build: ./client
+    #     container_name: client
+    #     ports:
+    #         - '5173:5173'
+    #     volumes:
+    #         - ./client:/app
+    #         - /app/node_modules
+    #     environment:
+    #         - CHOKIDAR_USEPOLLING=true
+
+    # outro-client:
+    #     restart: always
+    #     build: ./outro-client
+    #     container_name: outro-client
+    #     ports:
+    #         - '5174:5173'
+    #     volumes:
+    #         - ./outro-client:/app
+    #         - /app/node_modules
+    #     environment:
+    #         - CHOKIDAR_USEPOLLING=true
+    
+    server:
+        restart: always
+        build: ./server
+        container_name: server
+        ports:
+            - '5175:5175'
+        
+        develop:
+            watch:
+              - action: sync
+                path: ./server
+                target: /app
+
+              - action: rebuild
+                path: package.json
+                target: /app
