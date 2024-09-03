@@ -7,7 +7,7 @@ function getElementAt<T>(arr: T[], index: number): T {
 	return index >= 0 ? arr[index] : arr[arr.length + index];
 }
 
-const API_BASE_URL = "https://page-in-time-api.vercel.app/";
+const API_BASE_URL = "https://page-in-time-api.vercel.app";
 
 function TimeBook() {
 	const [time, setTime] = useState(new Date());

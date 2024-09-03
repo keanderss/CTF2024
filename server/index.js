@@ -19,7 +19,12 @@ const encrypted = CryptoJS.AES.encrypt(plaintext, key, {
 
 app.use(express.json());
 
-app.use(cors());
+app.use(
+	cors({
+		origin: "https://page-in-time.vercel.app",
+		methods: ["GET", "POST"],
+	})
+);
 
 app.use("*", (req, _res, next) => {
 	console.log(req.method, req.params[0], req.body);
