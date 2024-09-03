@@ -1,6 +1,6 @@
 {
 	"version": 2,
-    "buildCommand": "node index.js",
+	"build": [{ "src": "./index.js", "use": "@vercel/node" }],
 	"rewrites": [
 		{
 			"source": "/(.*)",
