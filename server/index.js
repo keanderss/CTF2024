@@ -1,5 +1,6 @@
 const CryptoJS = require("crypto-js");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 
@@ -17,6 +18,13 @@ const encrypted = CryptoJS.AES.encrypt(plaintext, key, {
 }).toString();
 
 app.use(express.json());
+
+app.use(
+	cors({
+		origin: "https://page-in-time.vercel.app",
+		methods: ["GET", "POST"],
+	})
+);
 
 app.use("*", (req, _res, next) => {
 	console.log(req.method, req.params[0], req.body);
