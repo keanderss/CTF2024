@@ -1,5 +1,6 @@
 {
 	"version": 2,
+    "buildCommand": "node index.js",
 	"rewrites": [
 		{
 			"source": "/(.*)",
