@@ -49,3 +49,5 @@ app.post("/solutions", (req, res) => {
 });
 
 app.listen(port, console.log(`Listening on port ${port}`));
+
+module.exports = app;
