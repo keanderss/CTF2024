@@ -3,10 +3,10 @@ const express = require("express");
 const app = express();
 const port = 5175;
 
-const problem0 = "PLACEHOLDER";
-const plaintext = "PLACEHOLDER";
+const problem0 = "PLACEHOLDER 1";
+const plaintext = "PLACEHOLDER 2";
 const solution = 0;
-const flag = "PLACEHOLDER";
+const flag = "PLACEHOLDER 3";
 const keydata = "000110";
 
 const key = CryptoJS.SHA256(keydata);
@@ -26,7 +26,7 @@ app.use("*", (req, _res, next) => {
 app.get("/problems", (_req, res) => {
 	const problems = {
 		p0: problem0,
-		p1: { encrypted: encrypted, iv: iv },
+		p1: encrypted,
 	};
 	res.status(200).send(problems);
 });
