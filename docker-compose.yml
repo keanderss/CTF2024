@@ -28,7 +28,7 @@ services:
         build: ./server
         container_name: server
         ports:
-            - '5175:5175'
+            - '5175:3000'
         
         develop:
             watch:
