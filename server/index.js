@@ -1,7 +1,7 @@
 const CryptoJS = require("crypto-js");
 const express = require("express");
 const app = express();
-const port = 5175;
+const port = 3000;
 
 const problem0 = "PLACEHOLDER 1";
 const plaintext = "PLACEHOLDER 2";
