@@ -3,19 +3,30 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 3000;
-
-const problem0 = "Nwwuhhh Nbszuhzmtr Nwuhhwhhwu, Nww Nwww Nwwww, Nw zc Nn. ";
-const plaintext = "RmRzIG9xbmFrZGxyPyBPbnJzIHJua3RzaG5tciEgbXpsZDogcm5rdWRxX216bGQsIGN6c3o6IFJHWkJCS1VIKEFubmouZmRzT3pmZChnLGwscixDLEwsWCkpIA==Zz1XV0hISCxsPUtIVyxyPUtIVyxDPVdXV0gsTD1XSEgsWD1MWldfSE1TIA== ";
-const solution = "a8c92acbf0cfdfdd08f3de4d1174760e371ed3ff817dfef0b56a78d40bbc425d";
+const solution =
+	"a8c92acbf0cfdfdd08f3de4d1174760e371ed3ff817dfef0b56a78d40bbc425d";
 const flag = "date_flag{_4w41t1ng_4551gnm3nt5_}";
-const keydata = "2041030103717";
+const plaintexts = [
+	{
+		plaintext: "Nwwuhhh Nbszuhzmtr Nwuhhwhhwu, Nww Nwww Nwwww, Nw zc Nn. ",
+		keydata: "bf2099287614864a1061b56645aa184f",
+	},
+	{
+		plaintext:
+			"RmRzIG9xbmFrZGxyPyBPbnJzIHJua3RzaG5tciEgbXpsZDogcm5rdWRxX216bGQsIGN6c3o6IFJHWkJCS1VIKEFubmouZmRzT3pmZChnLGwscixDLEwsWCkpIA==Zz1XV0hISCxsPUtIVyxyPUtIVyxDPVdXV0gsTD1XSEgsWD1MWldfSE1TIA== ",
+		keydata: "2041030103717",
+	},
+];
 
-const key = CryptoJS.SHA256(keydata);
-const iv = CryptoJS.SHA1(keydata);
-const encrypted = CryptoJS.AES.encrypt(plaintext, key, {
-	iv: iv,
-	mode: CryptoJS.mode.CBC,
-}).toString();
+let problems = [];
+
+plaintexts.forEach((p) => {
+	let problem = CryptoJS.AES.encrypt(p.plaintext, CryptoJS.SHA256(p.keydata), {
+		iv: CryptoJS.SHA1(p.keydata),
+		mode: CryptoJS.mode.CBC,
+	}).toString();
+	problems = [...problems, problem];
+});
 
 app.use(express.json());
 
@@ -32,10 +43,6 @@ app.use("*", (req, _res, next) => {
 });
 
 app.get("/problems", (_req, res) => {
-	const problems = {
-		p0: problem0,
-		p1: encrypted,
-	};
 	res.status(200).send(problems);
 });
 
