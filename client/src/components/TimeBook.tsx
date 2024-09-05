@@ -9,6 +9,8 @@ function getElementAt<T>(arr: T[], index: number): T {
 
 const API_BASE_URL = "https://page-in-time-api.vercel.app";
 
+const p0key = "bf2099287614864a1061b56645aa184f";
+
 function TimeBook() {
 	const [time, setTime] = useState(new Date());
 	const [year, setYear] = useState(time.getFullYear());
@@ -19,8 +21,7 @@ function TimeBook() {
 	const [second, setSecond] = useState(time.getSeconds());
 	const [sync, setSync] = useState(true);
 	const [page, setPage] = useState("");
-	const [encrypted, setEncrypted] = useState("");
-	const [problem, setProblem] = useState("");
+	const [problems, setProblems] = useState([""]);
 
 	const writePage = (seed: number, lower: number, upper: number) => {
 		let page = "";
@@ -56,14 +57,18 @@ function TimeBook() {
 		page += writePage(seed, 0, Math.floor(seededRandom(seed) * length));
 		let p = "";
 		try {
-			p = CryptoJS.AES.decrypt(encrypted, CryptoJS.SHA256(key), {
-				iv: CryptoJS.SHA1(key),
-				mode: CryptoJS.mode.CBC,
-			}).toString(CryptoJS.enc.Utf8);
+			p = AESdecrypt(problems[1], key);
 		} catch {}
-		p ? (page += `${p} `) : (page += problem);
+		p ? (page += `${p} `) : (page += AESdecrypt(problems[0], p0key));
 		page += writePage(seed, Math.floor(seededRandom(seed) * length), length);
 		return page;
+	};
+
+	const AESdecrypt = (encrypted: string, key: string) => {
+		return CryptoJS.AES.decrypt(encrypted, CryptoJS.SHA256(key), {
+			iv: CryptoJS.SHA1(key),
+			mode: CryptoJS.mode.CBC,
+		}).toString(CryptoJS.enc.Utf8);
 	};
 
 	const SyncTime = () => {
@@ -219,11 +224,7 @@ function TimeBook() {
 	useEffect(() => {
 		const fetchProblems = async () => {
 			const response = await fetch(`${API_BASE_URL}/problems`);
-			const problems = await response.json();
-			const problem = problems.p0;
-			const encrypted = problems.p1;
-			setProblem(problem);
-			setEncrypted(encrypted);
+			setProblems(await response.json());
 		};
 		fetchProblems();
 	}, []);
