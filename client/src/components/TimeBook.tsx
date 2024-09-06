@@ -144,9 +144,12 @@ function TimeBook() {
 		},
 	};
 
-	const getMaxValue = (unit: timeUnit) => {
+	const getMaxValue = (unit: timeUnit, inc: boolean) => {
 		if (unit === "DaTe") {
-			return getMaxDays(month);
+			if (inc) {
+				return getMaxDays(month);
+			}
+			return getMaxDays(month - 1);
 		}
 		return timeUnits[unit].maxValue as number;
 	};
@@ -159,13 +162,15 @@ function TimeBook() {
 		val: number,
 		set: React.Dispatch<React.SetStateAction<number>>
 	) => {
+		const max = getMaxValue(unit, inc);
+		const min = timeUnits[unit].minValue;
+		const next = timeUnits[unit].nextUnit;
 		inc
-			? val === getMaxValue(unit)
-				? (set(timeUnits[unit].minValue),
-				  traverseTime(timeUnits[unit].nextUnit, true))
+			? val === max
+				? (set(min), traverseTime(next, true))
 				: set(val + 1)
-			: val === timeUnits[unit].minValue
-			? (set(getMaxValue(unit)), traverseTime(timeUnits[unit].nextUnit, false))
+			: val === min
+			? (set(max), traverseTime(next, false))
 			: set(val - 1);
 	};
 
