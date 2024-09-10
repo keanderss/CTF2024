@@ -36,15 +36,13 @@ function TimeBook() {
 				}
 				let type = Math.floor(seededRandom(rand + j) * 16);
 				type > 2 ? (type = 0) : type;
-				j > 1
-					? (page += getElementAt(mids, type))
-					: (page += getElementAt(ends, type));
+				j > 1 ? (page += mids[type]) : (page += ends[type]);
 			}
 		}
 		return page;
 	};
 
-	const decrypt = (key: string) => {
+	const getPage = (key: string) => {
 		let seed =
 			year * 32140800 +
 			(month - 1) * 2678400 +
@@ -57,21 +55,21 @@ function TimeBook() {
 		page += writePage(seed, 0, Math.floor(seededRandom(seed) * length));
 		let p = "";
 		try {
-			p = AESdecrypt(problems[1], key);
+			p = aesDecrypt(problems[1], key);
 		} catch {}
-		p ? (page += `${p} `) : (page += AESdecrypt(problems[0], p0key));
+		p ? (page += `${p} `) : (page += aesDecrypt(problems[0], p0key));
 		page += writePage(seed, Math.floor(seededRandom(seed) * length), length);
 		return page;
 	};
 
-	const AESdecrypt = (encrypted: string, key: string) => {
+	const aesDecrypt = (encrypted: string, key: string) => {
 		return CryptoJS.AES.decrypt(encrypted, CryptoJS.SHA256(key), {
 			iv: CryptoJS.SHA1(key),
 			mode: CryptoJS.mode.CBC,
 		}).toString(CryptoJS.enc.Utf8);
 	};
 
-	const SyncTime = () => {
+	const syncTime = () => {
 		setTime(new Date());
 		setYear(time.getFullYear());
 		setMonth(time.getMonth() + 1);
@@ -204,14 +202,14 @@ function TimeBook() {
 
 	useEffect(() => {
 		if (sync) {
-			const intervalId = setInterval(SyncTime, 100);
+			const intervalId = setInterval(syncTime, 100);
 			return () => clearInterval(intervalId);
 		}
 	});
 
 	useEffect(() => {
 		setPage(
-			decrypt(
+			getPage(
 				`${hour}${minute}${Math.floor(second / 10)}${DaTe}${month}${year}`
 			)
 		);

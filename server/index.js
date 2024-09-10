@@ -59,7 +59,7 @@ app.post("/solutions", (req, res) => {
 		console.log(`SOLVER: ${JSON.stringify(response)}`);
 		res.status(200).send(response);
 	} else {
-		res.status(400).send();
+		res.status(401).send();
 	}
 });
 
