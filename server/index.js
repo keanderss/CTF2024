@@ -1,5 +1,6 @@
 const CryptoJS = require("crypto-js");
 const express = require("express");
+const { z } = require("zod");
 const cors = require("cors");
 const app = express();
 const port = 3000;
@@ -46,21 +47,26 @@ app.get("/problems", (_req, res) => {
 	res.status(200).send(problems);
 });
 
+const solver = z.object({
+	name: z.string().toUpperCase().min(1),
+	data: z.string().toLowerCase()
+}).strict().required();
+
 app.post("/solutions", (req, res) => {
-	const body = req.body;
-	const name = body.name;
-	const data = body.data;
-	if (data == solution && name != "") {
+	const validationResult = solver.safeParse(req.body);
+	if (validationResult.success && validationResult.data.data == solution) {
 		const response = {
-			SUBJECT: name.toUpperCase(),
+			SUBJECT: validationResult.data.name,
 			STATUS: "FURTHER EVALUATION PENDING",
 			FLAG: flag,
 		};
 		console.log(`SOLVER: ${JSON.stringify(response)}`);
 		res.status(200).send(response);
-	} else {
-		res.status(401).send();
 	}
+	if (validationResult.error) {
+		console.log(validationResult.error?.format()._errors)
+	}
+	res.status(401).send();
 });
 
 app.listen(port, console.log(`Listening on port ${port}`));
