@@ -67,7 +67,7 @@ app.post("/solutions", (req, res) => {
 		res.status(200).send(response);
 	}
 	if (validationResult.error) {
-		console.log(validationResult.error?.format()._errors);
+		console.log(validationResult.error.format());
 	}
 	res.status(401).send();
 });
