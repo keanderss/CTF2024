@@ -47,10 +47,13 @@ app.get("/problems", (_req, res) => {
 	res.status(200).send(problems);
 });
 
-const solver = z.object({
-	name: z.string().toUpperCase().min(1),
-	data: z.string().toLowerCase()
-}).strict().required();
+const solver = z
+	.object({
+		name: z.string().toUpperCase().min(1),
+		data: z.string().toLowerCase(),
+	})
+	.strict()
+	.required();
 
 app.post("/solutions", (req, res) => {
 	const validationResult = solver.safeParse(req.body);
@@ -64,7 +67,7 @@ app.post("/solutions", (req, res) => {
 		res.status(200).send(response);
 	}
 	if (validationResult.error) {
-		console.log(validationResult.error?.format()._errors)
+		console.log(validationResult.error?.format()._errors);
 	}
 	res.status(401).send();
 });

@@ -3,10 +3,6 @@ import { useEffect, useState } from "react";
 import CryptoJS from "crypto-js";
 import { seededRandom } from "three/src/math/MathUtils.js";
 
-function getElementAt<T>(arr: T[], index: number): T {
-	return index >= 0 ? arr[index] : arr[arr.length + index];
-}
-
 const API_BASE_URL = "https://page-in-time-api.vercel.app";
 
 const p0key = "bf2099287614864a1061b56645aa184f";
@@ -42,14 +38,22 @@ function TimeBook() {
 		return page;
 	};
 
-	const getPage = (key: string) => {
+	const getPage = (
+		h: number,
+		m: number,
+		s: number,
+		D: number,
+		M: number,
+		Y: number
+	) => {
+		let key = `${h}${m}${Math.floor(s / 10)}${D}${M}${Y}`;
 		let seed =
-			year * 32140800 +
-			(month - 1) * 2678400 +
-			(DaTe - 1) * 86400 +
-			hour * 3600 +
-			minute * 60 +
-			Math.floor(second / 10);
+			Y * 32140800 +
+			(M - 1) * 2678400 +
+			(D - 1) * 86400 +
+			h * 3600 +
+			m * 60 +
+			Math.floor(s / 10);
 		let page = "";
 		let length = 100;
 		page += writePage(seed, 0, Math.floor(seededRandom(seed) * length));
@@ -95,7 +99,9 @@ function TimeBook() {
 	};
 
 	const getMaxDays = (month: number) => {
-		let maxDays = getElementAt(timeUnits.DaTe.maxValue, month - 1);
+		let i = month - 1;
+		let list = timeUnits.DaTe.maxValue;
+		let maxDays = i >= 0 ? list[i] : list[list.length + i]
 		if (month === 2 && isLeapYear()) {
 			maxDays++;
 		}
@@ -213,11 +219,7 @@ function TimeBook() {
 	});
 
 	useEffect(() => {
-		setPage(
-			getPage(
-				`${hour}${minute}${Math.floor(second / 10)}${DaTe}${month}${year}`
-			)
-		);
+		setPage(getPage(hour, minute, second, DaTe, month, year));
 	}, [hour, minute, second, DaTe, month, year]);
 
 	useEffect(() => {
