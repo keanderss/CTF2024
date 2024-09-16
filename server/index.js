@@ -72,6 +72,44 @@ app.post("/solutions", (req, res) => {
 	res.status(401).send();
 });
 
+hints = {
+	packagejson: {
+		"name": "example",
+		"version": "1.0.0",
+		"main": "index.js",
+		"type": "module",
+		"scripts": {
+			"test": "echo \"Error: no test specified\" && exit 1"
+		},
+		"keywords": [],
+		"author": "",
+		"license": "ISC",
+		"description": "",
+		"dependencies": {
+			"crypto-js": "^4.2.0",
+			"three": "^0.168.0"
+		}
+	},
+	hints: [
+		"The clock.svg needs some source code to run",
+		"If I hid stuff too well then make sure to inspect everything",
+		"The middle path is encoded in octals",
+		"If typescript is too hard then try javascript",
+		"You don't need it, but if you do need it for some reason, the p0key is bf2099287614864a1061b56645aa184f",
+		"0b00010000 0o20 16 0x10",
+		"Its a single conversion to get the correct DaTe and time",
+		"Do we really need to sit here and click all day?",
+		"What do those equals signs mean?",
+		"a8c92a..."
+	],
+	api: ["/problems", "/solutions", "/hints"]
+}
+
+
+app.get("/hints", (_req, res) => {
+	res.status(200).send(hints)
+})
+
 app.listen(port, console.log(`Listening on port ${port}`));
 
 module.exports = app;
