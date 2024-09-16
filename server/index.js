@@ -91,10 +91,15 @@ hints = {
 		}
 	},
 	hints: [
-		"The clock needs some source code to run",
-		"v2.cryptii.com/octal/text",
+		"The clock.svg needs some source code to run",
+		"If I hid stuff too well then make sure to inspect everything",
+		"The middle path is encoded in octals",
+		"If typescript is too hard then try javascript",
 		"You don't need it, but if you do need it for some reason, the p0key is bf2099287614864a1061b56645aa184f",
 		"0b00010000 0o20 16 0x10",
+		"Its a single conversion to get the correct DaTe and time",
+		"Do we really need to sit here and click all day?",
+		"What do those equals signs mean?",
 		"a8c92a..."
 	],
 	api: ["/problems", "/solutions", "/hints"]
